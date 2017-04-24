@@ -13,7 +13,7 @@ package main
 
 import (
     "fmt"
-    "github.com/kofemann/linux_ftrace/ftrace"
+    "github.com/kofemann/linux_ftrace"
     "os"
     "os/signal"
 )
