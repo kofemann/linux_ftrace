@@ -111,17 +111,12 @@ func (ftrace *EventTrace) EventSource() chan Trace {
 	return ftrace.traces
 }
 
-// sinitize trace string: remove leading, trailing and multiple white spaces
-func sanitize(s string) string {
-	return strings.Replace(strings.TrimSpace(s), "  ", " ", -1)
-}
-
 // convert trace string into trace event
 func toTrace(s string) (Trace, error) {
 
 	var t Trace
-	fields := strings.SplitN(sanitize(s), " ", 6)
-	if len(fields) != 6 {
+	fields := strings.Fields(s)
+	if len(fields) < 6 {
 		return t, fmt.Errorf("Unexpected number of fields in trace: %d", len(fields))
 	}
 
@@ -145,7 +140,7 @@ func toTrace(s string) (Trace, error) {
 		Pid:      pid,
 		Cpu:      cpu,
 		Function: fields[4][:len(fields[4])-1],
-		Event:    fields[5],
+		Event:    strings.Join(fields[5:], " "),
 	}
 	return t, nil
 }
